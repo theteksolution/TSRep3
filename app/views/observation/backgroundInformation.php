@@ -18,7 +18,7 @@
 </style>
  <script>
 $(function() {
-    $("#ObservationDate").pickadate({ format: 'mm/dd/yyyy', formatSubmit: 'mm/dd/yyyy'});
+    $("#ObservationDate").pickadate({ format: 'mm-dd-yyyy', formatSubmit: 'mm-dd-yyyy'});
 
     $("#ClassStartTime").pickatime();
 
@@ -40,11 +40,11 @@ function isNumber(evt) {
 <h2>Background Information</h2>
 	
 <br /><br />
-<form>
+<form action="<?php echo DIR ?>observation/backgroundInformation" method="post">
     <input type="hidden" id="ObservationID" /> 
      <div class="form-group">
         <label for="ObservationDate">Observation Date</label>
-        <input type="text" name="ObservationDate" id="ObservationDate" class = "form-control" value="<?php echo  $data['BackgroundInfo']->ObservationDate; ?>" /> 
+        <input type="text" name="ObservationDate" id="ObservationDate" class = "form-control" value="<?php echo  date_format(date_create($data['BackgroundInfo']->ObservationDate),"m-d-Y"); ?>" /> 
     </div>
     <div class="form-group">
         <label for="ClassStartTime">Class Start Time</label>
@@ -71,10 +71,10 @@ function isNumber(evt) {
 		<input type="text" name="EndingNumberOfFemales" class = "form-control" onkeypress = "return isNumber(event)" value="<?php echo  $data['BackgroundInfo']->EndingNumberOfFemales; ?>"/> 
     </div>
     <div >
-        <label><input type="checkbox" name="UseInstructionalArtifacts" /> Did the students use instructional artifacts (e.g., handouts, worksheets, readings, etc.) in this lesson?</label>
+        <label><input type="checkbox" name="UseInstructionalArtifacts" <?php echo ( $data['BackgroundInfo']->UseInstructionalArtifacts == 'true') ? 'checked="checked"' : ''; ?>/> Did the students use instructional artifacts (e.g., handouts, worksheets, readings, etc.) in this lesson?</label>
     </div>
      <div >
-        <label><input type="checkbox" name="ObtainedArtifactsCopy" /> Was the observer able to obtain a copy of these artifacts to use in the coding process?</label>
+        <label><input type="checkbox" name="ObtainedArtifactsCopy" <?php echo ( $data['BackgroundInfo']->ObtainedArtifactsCopy == 'true') ? 'checked="checked"' : ''; ?>/> Was the observer able to obtain a copy of these artifacts to use in the coding process?</label>
     </div>
      <div class="form-group">
         <label for="Notes">Additional Notes</label>

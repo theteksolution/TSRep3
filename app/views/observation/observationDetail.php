@@ -41,44 +41,29 @@
 <div class="container-fluid">
 <h2>Observation Detail</h2>
 
-<form>
+<form  action="<?php echo DIR ?>observation/observationDetail" method="post">
 <input type="hidden" name="ObservationInformationID" />
 
 
 <div class="dropdown">
 Class Activity Code
 <br />
-<select name="ClassActivityCode">
-<?php
-	foreach($data['ClassActivityCodes'] as $row) {
-		echo '<option>'.$row.'</option>';
-	}
-?>
-</select>	
 
+<?php echo \helpers\form::Select($data['Select1']); ?>
+	
 <br />
 <br />
 Class Organization Code
 <br />
-<select name="ClassOrganizationCode">
-<?php
-	foreach($data['ClassOrganizationCodes'] as $row) {
-		echo '<option>'.$row.'</option>';
-	}
-?>
-</select>	
+
+<?php echo \helpers\form::Select($data['Select2']); ?>
+
 <br />
 <br />
 Student Disengagement Code
 <br />
+<?php echo \helpers\form::Select($data['Select3']); ?>
 
-<select name="StudentDisengagementCode">
-	<?php
-	foreach($data['StudentDisengagementCodes'] as $row) {
-		echo '<option>'.$row.'</option>';
-	}
-?>
-</select>
 <br />
 <br />
 </div>
@@ -222,7 +207,7 @@ Student Disengagement Code
 </div>
  <div class="form-group">
         <label for="Notes">Additional Notes</label>
-		<textarea id="Notes" name="Notes" class = "form-control"></textarea>
+		<textarea id="Notes" name="Notes" class = "form-control"><?php echo  $data['ObservationDetail']->Notes; ?></textarea>
     </div>
 
 <input id="Submit1" class="btn btn-primary" type="submit" value="submit" />

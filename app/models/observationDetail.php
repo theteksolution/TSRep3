@@ -10,19 +10,24 @@ class ObservationDetail extends \core\model {
 		return $this->_db->selectOne("SELECT * FROM clob_observationinformation WHERE observationID = :ID",array(':ID' => $ID));
     }
 	
+	public function updateObservationDetailInfo($postdata, $where) { 
+		$this->_db->update(PREFIX.'observationinformation',$postdata, $where);
+	}
+	
 	public function getClassActivityCodes()
 	{
-		return array("INST", "MODL", "DISC", "DEMO", "READ", "SIM", "PRES", "WRIT", "HANDS", "LIT", "FIELD","ASMT", "SEC", "STN");
+		return array("INST"=>"INST", "MODL"=>"MODL", "DISC"=>"DISC", "DEMO"=>"DEMO", "READ"=>"READ", "SIM"=>"SIM","PRES"=>"PRES","WRIT"=>"WRIT", 
+		"HANDS"=>"HANDS", "LIT"=>"LIT", "FIELD"=>"FIELD","ASMT"=>"ASMT", "SEC"=>"SEC", "STN"=>"STN");
 	}
 	
 	public function getClassOrganizationCodes()
 	{
-		return array("I", "P", "G", "W");
+		return array("I"=>"I", "P"=>"P", "G"=>"G", "W"=>"W");
 	}
 	
 	public function getStudentDisengagementCodes()
 	{	
-		return array("NONE", "FEW", "HALF", "MOST", "ALL", "NA");
+		return array("NONE"=>"NONE", "FEW"=>"FEW", "HALF"=>"HALF", "MOST"=>"MOST", "ALL"=>"ALL", "NA"=>"NA");
 	}
 	
 }

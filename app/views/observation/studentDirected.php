@@ -10,11 +10,12 @@
 <h2>Student Directed</h2>
 <?php
 /*
-echo '<pre>';
+	echo '<pre>';
 	print_r($data['StudentInfo']);
-	echo '</pre>'; */
+	echo '</pre>'; 
+	*/
 ?>
-<form>
+<form action="<?php echo DIR ?>observation/studentDirected" method="post">
 <input type="hidden" name="POQType" />
 <div class="panel">
      <br />
@@ -52,7 +53,7 @@ echo '<pre>';
 					if ($row->QuestionType == "text") {?>
 			 <div class="form-group">
                 <label for="Notes">Additional Notes</label>
-                    <textarea class = "form-control"> <?php echo $row->Answer; ?></textarea >
+                    <textarea class = "form-control" name="a<?php echo $row->POQID; ?>"> <?php echo $row->Answer; ?></textarea >
             </div>
          
       <?php 		} 

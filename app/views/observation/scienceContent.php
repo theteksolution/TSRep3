@@ -9,7 +9,7 @@
 <div class="container-fluid">
 <h2>Science Content</h2>
 
-<form>
+<form action="<?php echo DIR ?>observation/scienceContent" method="post">
 <input type="hidden" name="POQType" />
 <div class="panel">
      <br />
@@ -35,7 +35,7 @@
 					if ($row->QuestionType == "text") {?>
 			 <div class="form-group">
                 <label for="Notes">Additional Notes</label>
-                    <textarea class = "form-control"> <?php echo $row->Answer; ?></textarea >
+                    <textarea class = "form-control" name="a<?php echo $row->POQID; ?>"> <?php echo $row->Answer; ?></textarea >
             </div>
          
       <?php 		} 
