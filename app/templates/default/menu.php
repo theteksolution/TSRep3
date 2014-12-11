@@ -26,11 +26,13 @@
         <li><a href="<?php echo DIR ?>observation/leadershipPractices">Leadership Practices</a></li>
 		<?php } ?>
       </ul>
+	  
+	  <?php if (\helpers\session::get('CurrentUserID') == null) { ?>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown" id="menuLogin">
                         <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
                         <div class="dropdown-menu" style="padding:17px;">
-                            <form>
+                            <form   action="<?php echo DIR ?>home/index" method="post">
                                 <input name="username" id="username" placeholder="Username" type="text"> 
                                 <input name="password" id="password" placeholder="Password" type="password"><br>
                                 <input type="submit" id="btnLogin" class="btn" value="Login">
@@ -38,6 +40,26 @@
                         </div>
                     </li>
                 </ul>
+				
+		<?php } ?>	
+
+		<?php 
+		
+		$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		
+		if(strpos($actual_link,"home/index") && \helpers\session::get('CurrentUserID') != null)
+		{
+		?>
+		
+			<ul class="nav navbar-nav navbar-right">
+                        <li id="newCLOB"><a href="<?php echo DIR ?>observation/backgroundInformation">New</a></li>
+                        <li id="rpts"><a href="<?php echo DIR ?>reports/index">Reports</a></li>
+                    </ul>
+		
+	<?php	} ?>
+		
+		
+		
          
            
  

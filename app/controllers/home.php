@@ -30,13 +30,26 @@ class Home extends \core\controller {
 		$data['title'] = 'Home';
 		//$data['welcome_message'] = $this->language->get('welcome_message');
 		
-		$data['welcome_message'] = 'Howdy!!';
 		$homeModel = new \models\home();
+		
+		
+		if (!empty($_POST))
+		{
+			//var_dump($_POST);
+			if ($_POST['username'] == 'test' && $_POST['password'] == 'test')
+			{
+				Session::set('CurrentUserID','test');
+			}
+		}
+		
+		if (Session::get('CurrentUserID') != null)
+		{
+		
+			$data['ObsBackgrounds'] = $homeModel->getObservationBackgrounds();
+		}
+		
+		
 		Session::destroy('CurrentObservationID');
-		
-		
-		$data['ObsBackgrounds'] = $homeModel->getObservationBackgrounds();
-		
 		
 		View::rendertemplate('header', $data);
 		View::render('home/index', $data);

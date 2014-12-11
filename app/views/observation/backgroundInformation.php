@@ -40,11 +40,12 @@ function isNumber(evt) {
 <h2>Background Information</h2>
 	
 <br /><br />
-<form action="<?php echo DIR ?>observation/backgroundInformation" method="post">
-    <input type="hidden" id="ObservationID" /> 
+<form action="<?php echo DIR ?>observation/backgroundInformation" method="post" >
+	
+    <input type="hidden" id="ObservationID" name="ObservationID" value="<?php echo $data['ObservationID']; ?>"/> 
      <div class="form-group">
         <label for="ObservationDate">Observation Date</label>
-        <input type="text" name="ObservationDate" id="ObservationDate" class = "form-control" value="<?php echo  date_format(date_create($data['BackgroundInfo']->ObservationDate),"m-d-Y"); ?>" /> 
+        <input type="text" name="ObservationDate" id="ObservationDate" class = "form-control" value="<?php echo  $data['BackgroundInfo'] ? date_format(date_create($data['BackgroundInfo']->ObservationDate),"m-d-Y") : "" ; ?>" /> 
     </div>
     <div class="form-group">
         <label for="ClassStartTime">Class Start Time</label>

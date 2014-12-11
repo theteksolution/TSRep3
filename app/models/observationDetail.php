@@ -14,6 +14,10 @@ class ObservationDetail extends \core\model {
 		$this->_db->update(PREFIX.'observationinformation',$postdata, $where);
 	}
 	
+	public function insertObservationDetailInfo($postdata) { 
+		$this->_db->insert(PREFIX.'observationinformation',$postdata);
+	}
+	
 	public function getClassActivityCodes()
 	{
 		return array("INST"=>"INST", "MODL"=>"MODL", "DISC"=>"DISC", "DEMO"=>"DEMO", "READ"=>"READ", "SIM"=>"SIM","PRES"=>"PRES","WRIT"=>"WRIT", 

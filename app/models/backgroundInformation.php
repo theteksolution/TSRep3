@@ -14,4 +14,9 @@ class BackgroundInformation extends \core\model {
 		$this->_db->update(PREFIX.'observationbackground',$postdata, $where);
 	}
 	
+	
+	public function insertBackgroundInformation($postdata) { 
+		$this->_db->insert(PREFIX.'observationbackground',$postdata);
+		return $this->_db->lastInsertId('observationID');
+	}
 }

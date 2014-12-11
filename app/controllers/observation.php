@@ -30,11 +30,11 @@ class Observation extends \core\controller{
 		$BInformation = new \models\backgroundInformation();
 		if (!empty($_POST))
 		{
-			
+		
 			$dateFormated = split('-', $_POST['ObservationDate']);
 			$date = $dateFormated[2].'-'.$dateFormated[0].'-'.$dateFormated[1];
 			
-			    $postdata = array(
+			$postdata = array(
 					'StartingNumberOfFemales' => $_POST['StartingNumberOfFemales'],
 					'EndingNumberOfFemales' => $_POST['EndingNumberOfFemales'],
 					'StartingNumberOfMales' => $_POST['StartingNumberOfMales'],
@@ -46,15 +46,21 @@ class Observation extends \core\controller{
 					'ClassEndTime' => $_POST['ClassEndTime'],
 					'Notes' => $_POST['Notes']
 					
-				);
-     
-	 /*
-	 
-	 */
-	 
-			$where = array('ObservationID' => Session::get('CurrentObservationID'));
+			);
+		//var_dump($_POST);
 			
-			$BInformation->updateBackgroundInformation($postdata, $where); 
+			if ($_POST['ObservationID'] != null)
+			{
+				$where = array('ObservationID' => Session::get('CurrentObservationID'));
+				$BInformation->updateBackgroundInformation($postdata, $where); 
+			}
+			else
+			{
+				$newObservationID = $BInformation->insertBackgroundInformation($postdata);
+				Session::set('CurrentObservationID',$newObservationID);	
+				$data['ObservationID'] = $newObservationID;
+			}
+		
 		}
 		
 		
@@ -62,10 +68,19 @@ class Observation extends \core\controller{
 		{
 			$data['BackgroundInfo'] = $BInformation->getBackgroundInformation($ObservationID[0]);
 			Session::set('CurrentObservationID',$ObservationID[0]);	
+			$data['ObservationID'] = $ObservationID[0];
 		}
 		else
 		{
-			$data['BackgroundInfo'] = $BInformation->getBackgroundInformation(Session::get('CurrentObservationID'));
+			if (Session::get('CurrentObservationID') != null)
+			{
+				$data['BackgroundInfo'] = $BInformation->getBackgroundInformation(Session::get('CurrentObservationID'));
+				$data['ObservationID'] = Session::get('CurrentObservationID');
+			}
+			else
+			{
+				Session::destroy('CurrentObservationID');
+			}
 		}
 		
 		View::rendertemplate('header', $data);
@@ -119,7 +134,9 @@ class Observation extends \core\controller{
 		
 		if (!empty($_POST))
 		{	
-			    $postdata = array(
+		
+			$postdata = array(
+					'ObservationId' => Session::get('CurrentObservationID'),
 					'ClassActivityCode' => $_POST['ClassActivityCode'],
 					'ClassOrganizationCode' => $_POST['ClassOrganizationCode'],
 					'StudentDisengagementCode' => $_POST['StudentDisengagementCode'],
@@ -144,10 +161,17 @@ class Observation extends \core\controller{
 					'SummarizeCount' => $_POST['SummarizeCount'],
 					'Notes' => $_POST['Notes']
 				);
-      
-			$where = array('ObservationID' => Session::get('CurrentObservationID'));
-			
-			$ODetail ->updateObservationDetailInfo($postdata, $where); 
+		
+			if($ODetail->getObservationDetailInfo(Session::get('CurrentObservationID')) == null)
+			{
+				$ODetail ->insertObservationDetailInfo($postdata); 
+			}
+			else
+			{
+				$where = array('ObservationID' => Session::get('CurrentObservationID'));
+				$ODetail ->updateObservationDetailInfo($postdata, $where); 
+			}
+			    
 		}
 		
 		
@@ -155,19 +179,19 @@ class Observation extends \core\controller{
 
 		$selectData1['id'] = 'ClassActivityCode';
 		$selectData1['name'] = 'ClassActivityCode';
-		$selectData1['value'] = 'DISC';
+		$selectData1['value'] = $data['ObservationDetail']->ClassActivityCode;
 		$selectData1['data'] = $ODetail->getClassActivityCodes();
 		$data['Select1'] = $selectData1;
 		
 		$selectData2['id'] = 'ClassOrganizationCode';
 		$selectData2['name'] = 'ClassOrganizationCode';
-		$selectData2['value'] = 'I';
+		$selectData2['value'] = $data['ObservationDetail']->ClassOrganizationCode;
 		$selectData2['data'] = $ODetail->getClassOrganizationCodes();
 		$data['Select2'] = $selectData2;
 		
 		$selectData3['id'] = 'StudentDisengagementCode';
 		$selectData3['name'] = 'StudentDisengagementCode';
-		$selectData3['value'] = 'FEW';
+		$selectData3['value'] = $data['ObservationDetail']->StudentDisengagementCode;
 		$selectData3['data'] = $ODetail->getStudentDisengagementCodes();
 		$data['Select3'] = $selectData3;
 			
