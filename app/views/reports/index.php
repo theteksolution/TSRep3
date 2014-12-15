@@ -1,5 +1,12 @@
-<script src="app/templates/default/js/jquery.js"></script>
-<script src="app/templates/default/js/highcharts.js"></script>
+<!-- 
+
+index.php
+
+This is the index view for the Reports controller
+
+-->
+
+<script src="<?php echo \helpers\url::get_template_path();?>js/highcharts.js"></script>
 <script>
 
 
@@ -24,14 +31,13 @@
 
 
         function loadReports() {
-            alert('goin ig');
-            var url = "/Reports/Chart1";
-            $.getJSON('@Url.Action("Chart1")', function (data) {
-
-                alert(data[1]['data']);
-                options.xAxis.categories = data[1]['data'];
-                options.series[0] = data[0];
-                //options.series[0].data = data.Count;
+            //var url = "/Reports/Chart1";
+            $.getJSON("<?php echo DIR ?>reports/chart1", function (data) {
+				
+                //alert(data[0]['data']);
+				options.xAxis.categories = data[0]['data'];
+                options.series[0] = data[1];
+                ////options.series[0].data = data.Count;
                 var chart = new Highcharts.Chart(options);
                 });
         }
@@ -39,39 +45,12 @@
         loadReports();
     });
 
-
-    //$(function () {
-    //    $('#container').highcharts({
-    //        chart: {
-    //            type: 'bar'
-    //        },
-    //        title: {
-    //            text: 'Fruit Consumption'
-    //        },
-    //        xAxis: {
-    //            categories: ['Apples', 'Bananas', 'Oranges']
-    //        },
-    //        yAxis: {
-    //            title: {
-    //                text: 'Fruit eaten'
-    //            }
-    //        },
-    //        series: [{
-    //            name: 'Jane',
-    //            data: [1, 0, 4]
-    //        }, {
-    //            name: 'John',
-    //            data: [5, 7, 3]
-    //        }]
-    //    });
-    //});
-
 </script>
 
 
-
+<?php include 'app/templates/default/menu.php';?>
+<div class="container-fluid">
 <h2>Reports</h2>
 
-
 <div id="container" style="width:100%; height:400px;"></div>
-
+</div>

@@ -1,10 +1,19 @@
 <?php namespace Models;
 
+/*
+ * StudentDirected model
+ *
+ * Leon Rich
+ */
+
 class StudentDirected extends \core\model {
     
 	function __construct(){
 		parent::__construct();
-    }
+		}
+    
+	
+	// Get the Student Directed information
 	
 	public function getStudentDirectedInfo($ID){
 		return $this->_db->select("SELECT p.*, o.Answer FROM clob_postobservationquestions p 
@@ -12,18 +21,16 @@ class StudentDirected extends \core\model {
 										WHERE p.poqtype = 'student'  order by subsection,displayorder",array(':ID' => $ID));
     }
 	
-	
+	// Delete Student Directed Information
 	public function deleteStudentDirected($where)
 	{
-		// First delete all records
-		$this->_db->delete(PREFIX.'observationsanswers',$where);
-		
+		$this->_db->delete(PREFIX.'observationsanswers',$where);	
 	}
 	
 	
+	// Insert Student Directed Information
 	public function insertStudentDirected($postdata, $where)
 	{
-		// then insert
 		$this->_db->insert(PREFIX.'observationsanswers',$postdata);
 	}
 	

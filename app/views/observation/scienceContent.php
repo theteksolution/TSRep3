@@ -1,10 +1,18 @@
-<style>
+<!--
+
+scienceContent.php
+
+This is the scienceContent view for the Observations controller
+
+-->
+
+<!-- <style>
     .panel
     {
          min-width:auto;
          width:60%;
     }
-</style>
+</style> -->
 <?php include 'app/templates/default/menu.php';?>
 <div class="container-fluid">
 <h2>Science Content</h2>
@@ -15,7 +23,7 @@
      <br />
    
         
-	  LIFE SCIENCES
+	  <b>LIFE SCIENCES</b>
      
 	 <?php if($data['ScienceInfo']){ 
 				foreach($data['ScienceInfo'] as $row){
@@ -29,7 +37,7 @@
 				}
 			}  ?>
     
-   
+   <br />
    	<?php if($data['ScienceInfo']){ 
 				foreach($data['ScienceInfo'] as $row){
 					if ($row->QuestionType == "text") {?>

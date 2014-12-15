@@ -1,10 +1,19 @@
-<style>
+<!--
+
+leadershipPractices.php
+
+This is the leadershipPractices view from the Observations controller
+
+
+-->
+
+<!-- <style>
     .panel
     {
          min-width:auto;
          width:60%;
     }
-</style>
+</style> -->
 <?php include 'app/templates/default/menu.php';?>
 <div class="container-fluid">
 <h2>LeadershipPractices</h2>
@@ -13,7 +22,7 @@
 <input type="hidden" name="POQType" />
 <div class="panel">
      <br />
-    LEADERSHIP PRACTICES
+    <b>LEADERSHIP PRACTICES</b>
      
      
             <?php if($data['LeadershipInfo']){ 
@@ -29,7 +38,7 @@
 			}  ?>
     
 	
-	
+	<br />
 	<?php if($data['LeadershipInfo']){ 
 				foreach($data['LeadershipInfo'] as $row){
 					if ($row->QuestionType == "text") {?>

@@ -3,38 +3,36 @@ use core\view,
     helpers\session as Session;
 
 /*
- * Welcome controller
+ * Observation controller
  *
- * @author David Carr - dave@daveismyname.com - http://www.daveismyname.com
- * @version 2.1
- * @date June 27, 2014
+ * Leon Rich
  */
 class Observation extends \core\controller{
 
-	/**
-	 * call the parent construct
-	 */
+	// Parent constructor
 	public function __construct(){
 		parent::__construct();
 
 		$this->language->load('welcome');
 	}
 
-	/**
-	 * define page title and load template files
-	 */
 	
-	
+	// Action to handle backgroundInformation
 	public function backgroundInformation($ObservationID) {
 	
+		// Add a reference to the backgroundInformation model
 		$BInformation = new \models\backgroundInformation();
+		
+		// Check to see if this is a post
 		if (!empty($_POST))
 		{
 		
+			// Prep the data to be updated/inserted
 			$dateFormated = split('-', $_POST['ObservationDate']);
 			$date = $dateFormated[2].'-'.$dateFormated[0].'-'.$dateFormated[1];
 			
 			$postdata = array(
+					'ClassName' => $_POST['ClassName'],
 					'StartingNumberOfFemales' => $_POST['StartingNumberOfFemales'],
 					'EndingNumberOfFemales' => $_POST['EndingNumberOfFemales'],
 					'StartingNumberOfMales' => $_POST['StartingNumberOfMales'],
@@ -47,8 +45,10 @@ class Observation extends \core\controller{
 					'Notes' => $_POST['Notes']
 					
 			);
-		//var_dump($_POST);
+			//var_dump($_POST);
 			
+			
+			// Insert or update the data
 			if ($_POST['ObservationID'] != null)
 			{
 				$where = array('ObservationID' => Session::get('CurrentObservationID'));
@@ -63,7 +63,7 @@ class Observation extends \core\controller{
 		
 		}
 		
-		
+		// Handle rendering based on ObservationID
 		if (isset($ObservationID[0]))
 		{
 			$data['BackgroundInfo'] = $BInformation->getBackgroundInformation($ObservationID[0]);
@@ -83,23 +83,34 @@ class Observation extends \core\controller{
 			}
 		}
 		
+		
+		// Render the view
 		View::rendertemplate('header', $data);
 		View::render('observation/backgroundInformation', $data);
 		View::rendertemplate('footer', $data);
 	}
 	
 	
+	
+	// Action to handle leadershipPractices
 	public function leadershipPractices() {
 	
+	
+		// Reference to the LeadershipPractices model
 		$LPractices = new \models\leadershipPractices();
 		
+		
+		// Check to see if this is a post
 		if (!empty($_POST))
 		{
 			//var_dump($_POST);
 			$where = array('ObservationID' => Session::get('CurrentObservationID'), 'POQType' => 'leadership');
 			
+			// Delete previous data
 			$LPractices->deleteLeadershipPractices($where);
 			
+			
+			// Insert the new data
 			foreach ($_POST as $key => $value){
 				if (substr($key, 0, 1) == "a") {
 					$POQID = str_replace("a","",$key);
@@ -117,24 +128,36 @@ class Observation extends \core\controller{
 			
 		}
 		
+		
+		// Reload the leadership information
 		$data['LeadershipInfo'] = $LPractices->getLeadershipInfo(Session::get('CurrentObservationID'));	
 		
 		/*echo '<pre>';
 	print_r($data['LeadershipInfo']);
 	echo '</pre>'; */
 	
+	
+		// Render the view
 		View::rendertemplate('header', $data);
 		View::render('observation/leadershipPractices', $data);
 		View::rendertemplate('footer', $data);
 	}
 	
+	
+	// Action for observationDetail
 	public function observationDetail() {
 	
+	
+		// Reference to the observationDetail model
 		$ODetail = new \models\observationDetail();
 		
+		
+		// Check to see if this is a post
 		if (!empty($_POST))
 		{	
 		
+		
+			// Prepare data for table
 			$postdata = array(
 					'ObservationId' => Session::get('CurrentObservationID'),
 					'ClassActivityCode' => $_POST['ClassActivityCode'],
@@ -162,6 +185,8 @@ class Observation extends \core\controller{
 					'Notes' => $_POST['Notes']
 				);
 		
+		
+			// Insert or Update the data
 			if($ODetail->getObservationDetailInfo(Session::get('CurrentObservationID')) == null)
 			{
 				$ODetail ->insertObservationDetailInfo($postdata); 
@@ -174,9 +199,10 @@ class Observation extends \core\controller{
 			    
 		}
 		
-		
+		// Load data for rendering
 		$data['ObservationDetail'] = $ODetail->getObservationDetailInfo(Session::get('CurrentObservationID'));
 
+		// Load Dropdowns with data
 		$selectData1['id'] = 'ClassActivityCode';
 		$selectData1['name'] = 'ClassActivityCode';
 		$selectData1['value'] = $data['ObservationDetail']->ClassActivityCode;
@@ -195,22 +221,34 @@ class Observation extends \core\controller{
 		$selectData3['data'] = $ODetail->getStudentDisengagementCodes();
 		$data['Select3'] = $selectData3;
 			
+			
+		// Render the view
 		View::rendertemplate('header', $data);
 		View::render('observation/observationDetail', $data);
 		View::rendertemplate('footer', $data);
 	}
 	
+	
+	// Action for scienceContent
 	public function scienceContent() {
 	
+	
+		// Reference to the scienceContent model
 		$SContent = new \models\scienceContent();
 		
+		
+		// Check if this is a post
 		if (!empty($_POST))
 		{
 			//var_dump($_POST);
 			$where = array('ObservationID' => Session::get('CurrentObservationID'), 'POQType' => 'science');
 			
+			
+			// Delete current information
 			$SContent->deleteScienceContent($where);
 			
+			
+			// Insert new data
 			foreach ($_POST as $key => $value){
 				if (substr($key, 0, 1) == "a") {
 					$POQID = str_replace("a","",$key);
@@ -228,25 +266,36 @@ class Observation extends \core\controller{
 			
 		}
 		
+		// Load data
 		$data['ScienceInfo'] = $SContent->getScienceContentInfo(Session::get('CurrentObservationID'));	
 		
+		
+		// Render view
 		View::rendertemplate('header', $data);
 		View::render('observation/scienceContent', $data);
 		View::rendertemplate('footer', $data);
 	
 	}
 	
+	
+	// Action for studentDirected
 	public function studentDirected() {
 	
+		// Reference to the studentDirected model
 		$SDirected = new \models\studentDirected();
 		
+		// Check to see if this is a post
 		if (!empty($_POST))
 		{
 			//var_dump($_POST);
 			$where = array('ObservationID' => Session::get('CurrentObservationID'), 'POQType' => 'student');
 			
+			
+			// Delete current data
 			$SDirected->deleteStudentDirected($where);
 			
+			
+			// Insert new data
 			foreach ($_POST as $key => $value){
 				if (substr($key, 0, 1) == "a") {
 					$POQID = str_replace("a","",$key);
@@ -264,24 +313,37 @@ class Observation extends \core\controller{
 			
 		}
 	
+		// Load data
 		$data['StudentInfo'] = $SDirected->getStudentDirectedInfo(Session::get('CurrentObservationID'));	
 		
+		
+		// Render the view
 		View::rendertemplate('header', $data);
 		View::render('observation/studentDirected', $data);
 		View::rendertemplate('footer', $data);
 	}
 	
+	
+	// Action for teacherDirected
 	public function teacherDirected() {
 	
+	
+		// Reference for the teacherDirected model
 		$TDirected = new \models\teacherDirected();
 		
+		
+		// Check is this is a post
 		if (!empty($_POST))
 		{
 			//var_dump($_POST);
 			$where = array('ObservationID' => Session::get('CurrentObservationID'), 'POQType' => 'teacher');
 			
+			
+			// Delete current data
 			$TDirected->deleteTeacherDirected($where);
 			
+			
+			// Insert new data
 			foreach ($_POST as $key => $value){
 				if (substr($key, 0, 1) == "a") {
 					$POQID = str_replace("a","",$key);
@@ -299,8 +361,12 @@ class Observation extends \core\controller{
 			
 		}
 		
+		
+		// Load data for view
 		$data['TeacherInfo'] = $TDirected->getTeacherDirectedInfo(Session::get('CurrentObservationID'));	
 		
+		
+		// Render view
 		View::rendertemplate('header', $data);
 		View::render('observation/teacherDirected', $data);
 		View::rendertemplate('footer', $data);

@@ -3,11 +3,9 @@ use core\view,
     helpers\session as Session;
 
 /*
- * Welcome controller
+ * Home controller
  *
- * @author David Carr - dave@daveismyname.com - http://www.daveismyname.com
- * @version 2.1
- * @date June 27, 2014
+ * Leon Rich
  */
 class Home extends \core\controller {
 
@@ -28,20 +26,24 @@ class Home extends \core\controller {
 	 */
 	public function index() {
 		$data['title'] = 'Home';
-		//$data['welcome_message'] = $this->language->get('welcome_message');
 		
+		// Add a reference to the Home model
 		$homeModel = new \models\home();
 		
 		
+		// Check to see if this is a post
 		if (!empty($_POST))
 		{
 			//var_dump($_POST);
+			
+			// Set UserID in a session
 			if ($_POST['username'] == 'test' && $_POST['password'] == 'test')
 			{
 				Session::set('CurrentUserID','test');
 			}
 		}
 		
+		// Get the Observations list if we have a user
 		if (Session::get('CurrentUserID') != null)
 		{
 		
@@ -51,6 +53,8 @@ class Home extends \core\controller {
 		
 		Session::destroy('CurrentObservationID');
 		
+		
+		// Render the view
 		View::rendertemplate('header', $data);
 		View::render('home/index', $data);
 		View::rendertemplate('footer', $data);

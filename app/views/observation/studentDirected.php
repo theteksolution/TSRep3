@@ -1,10 +1,18 @@
-<style>
+<!--
+
+studentDirected.php
+
+This is the studentDirected view for the Observation controller
+
+-->
+
+<!-- <style>
     .panel
     {
          min-width:auto;
          width:60%;
     }
-</style>
+</style> -->
 <?php include 'app/templates/default/menu.php';?>
 <div class="container-fluid">
 <h2>Student Directed</h2>
@@ -20,7 +28,7 @@
 <div class="panel">
      <br />
    
-	  QUESTIONING / EXPLORATION
+	  <b>QUESTIONING / EXPLORATION</b>
      
 	 <?php if($data['StudentInfo']){ 
 				foreach($data['StudentInfo'] as $row){
@@ -33,7 +41,7 @@
       <?php 		} 
 				}
 			}  ?>
-   DESIGN
+   <b>DESIGN</b>
     <?php if($data['StudentInfo']){ 
 				foreach($data['StudentInfo'] as $row){
 					if ($row->SubSection == "2") {?>
@@ -47,7 +55,7 @@
 			}  ?>
     
 	
-	
+	<br />
 	<?php if($data['StudentInfo']){ 
 				foreach($data['StudentInfo'] as $row){
 					if ($row->QuestionType == "text") {?>
